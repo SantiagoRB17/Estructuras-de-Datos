@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 public class EliminarRConIterador {
     public static void main(String[] args) {
-        ArrayList<String> lista = new ArrayList<>();
+        ArrayList<String> lista = new ArrayList<String>();
         lista.add("Santiago");
         lista.add("Maria");
         lista.add("Raul");

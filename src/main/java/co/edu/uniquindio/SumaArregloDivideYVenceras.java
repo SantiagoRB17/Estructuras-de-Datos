@@ -1,3 +1,5 @@
+package co.edu.uniquindio;
+
 public class SumaArregloDivideYVenceras {
     public static void main(String[] args) {
         int [] lista = {1,2,5,4};

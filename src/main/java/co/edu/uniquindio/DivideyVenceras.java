@@ -1,3 +1,5 @@
+package co.edu.uniquindio;
+
 public class DivideyVenceras{
     public static void main(String[] args){
         int [] lista = {1,2,3,8,4,5};
