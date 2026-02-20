@@ -2,8 +2,6 @@ package co.edu.uniquindio;
 
 import java.util.ArrayList;
 
-import java.util.Comparator;
-
 public class ArrayListClientes {
     public static void main(String[] args) {
         ArrayList<Cliente> clientes = new ArrayList<>();
@@ -16,11 +14,9 @@ public class ArrayListClientes {
         clientes.add(new Cliente(41234,"Santiago",""));
         System.out.println(clientes);
 
-        Comparator<Cliente> porNombre = Comparator.comparing(Cliente::getNombre);
-
         System.out.println("-----------------------------------------------------------------");
 
-        clientes.sort(porNombre);
+        clientes.sort(null);
         System.out.println(clientes);
     }
 
