@@ -1,4 +1,4 @@
-package co.edu.uniquindio;
+package co.edu.uniquindio.Recursividad;
 
 public class Matrushka {
     public static void mat(int n){

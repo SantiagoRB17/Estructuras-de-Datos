@@ -1,3 +1,5 @@
+package co.edu.uniquindio.Recursividad;
+
 public class RecursividadArreglos {
     public static void main(String[] args){
         int [] arreglo = {1,2,3,4,5};

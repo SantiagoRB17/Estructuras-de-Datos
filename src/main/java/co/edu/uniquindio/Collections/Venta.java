@@ -1,4 +1,4 @@
-package co.edu.uniquindio.LaboratorioCollections;
+package co.edu.uniquindio.Collections;
 
 public class Venta {
     private String CodigoProducto;

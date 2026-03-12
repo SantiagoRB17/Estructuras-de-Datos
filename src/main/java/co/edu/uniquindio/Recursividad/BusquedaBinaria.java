@@ -1,4 +1,4 @@
-package co.edu.uniquindio;
+package co.edu.uniquindio.Recursividad;
 
 public class BusquedaBinaria {
     public static void main(String[] args) {

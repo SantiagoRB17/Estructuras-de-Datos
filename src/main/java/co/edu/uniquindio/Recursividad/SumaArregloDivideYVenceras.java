@@ -1,4 +1,4 @@
-package co.edu.uniquindio;
+package co.edu.uniquindio.Recursividad;
 
 public class SumaArregloDivideYVenceras {
     public static void main(String[] args) {
