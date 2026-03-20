@@ -3,37 +3,41 @@ package co.edu.uniquindio.ListasEnlazadas;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ListaEnlazadaSimple implements Iterable<Integer>{
-    Nodo head;
-    int size;
+public class ListaDoblementeEnlazada implements Iterable<Integer> {
+    private NodoDoble head;
+    private NodoDoble tail;
+    private int size;
 
-    public ListaEnlazadaSimple() {
+    public ListaDoblementeEnlazada() {
         head = null;
+        tail = null;
         size = 0;
     }
 
     public void add(int data) {
-        Nodo newNode = new Nodo(data);
+        NodoDoble newNode = new NodoDoble(data);
+
         if (isEmpty()) {
             head = newNode;
+            tail = newNode;
         } else {
             newNode.setNext(head);
+            head.setPrev(newNode);
             head = newNode;
         }
         size++;
     }
 
     public void addLast(int data) {
-        Nodo newNode = new Nodo(data);
+        NodoDoble newNode = new NodoDoble(data);
 
         if (isEmpty()) {
             head = newNode;
+            tail = newNode;
         } else {
-            Nodo current = head;
-            while (current.getNext() != null) {
-                current = current.getNext();
-            }
-            current.setNext(newNode);
+            tail.setNext(newNode);
+            newNode.setPrev(tail);
+            tail = newNode;
         }
         size++;
     }
@@ -42,7 +46,16 @@ public class ListaEnlazadaSimple implements Iterable<Integer>{
         if (isEmpty()) {
             throw new RuntimeException("List is empty");
         }
+
+        if (size == 1) {
+            head = null;
+            tail = null;
+            size--;
+            return;
+        }
+
         head = head.getNext();
+        head.setPrev(null);
         size--;
     }
 
@@ -53,16 +66,13 @@ public class ListaEnlazadaSimple implements Iterable<Integer>{
 
         if (size == 1) {
             head = null;
+            tail = null;
             size--;
             return;
         }
 
-        Nodo current = head;
-        while (current.getNext().getNext() != null) {
-            current = current.getNext();
-        }
-
-        current.setNext(null);
+        tail = tail.getPrev();
+        tail.setNext(null);
         size--;
     }
 
@@ -85,12 +95,13 @@ public class ListaEnlazadaSimple implements Iterable<Integer>{
             return;
         }
 
-        Nodo current = head;
-        for (int i = 0; i < index - 1; i++) {
+        NodoDoble current = head;
+        for (int i = 0; i < index; i++) {
             current = current.getNext();
         }
 
-        current.setNext(current.getNext().getNext());
+        current.getPrev().setNext(current.getNext());
+        current.getNext().setPrev(current.getPrev());
         size--;
     }
 
@@ -98,55 +109,65 @@ public class ListaEnlazadaSimple implements Iterable<Integer>{
         return head == null;
     }
 
-    public int getNodeValue(int index){
-        if(isEmpty()){
+    public int getNodeValue(int index) {
+        if (isEmpty()) {
             throw new RuntimeException("List is empty");
         }
-        if(index < 0 || index >= size){
+        if (index < 0 || index >= size) {
             throw new RuntimeException("Index out of bounds");
         }
-        Nodo current = head;
-        for(int i = 0; i < index; i++){
+
+        NodoDoble current = head;
+        for (int i = 0; i < index; i++) {
             current = current.getNext();
         }
         return current.getData();
     }
-    public int getNodePosition(int data){
-        Nodo current = head;
+
+    public int getNodePosition(int data) {
+        NodoDoble current = head;
         int pos = 0;
-        while(current != null){
-            if(current.getData() == data){
+
+        while (current != null) {
+            if (current.getData() == data) {
                 return pos;
             }
-            pos++;
             current = current.getNext();
+            pos++;
         }
         return -1;
     }
-    public boolean isValid(int index){
+
+    public boolean isValid(int index) {
         return index >= 0 && index < size;
     }
-    public void modifyNode(int data){
-        if(isEmpty()){
+
+    public void modifyNode(int oldData, int newData) {
+        if (isEmpty()) {
             throw new RuntimeException("List is empty");
         }
-        Nodo current = head;
-        for(int i = 0; i < size; i++){
-            if(current.getData() == data){
-                current.setData(data);
+
+        NodoDoble current = head;
+        while (current != null) {
+            if (current.getData() == oldData) {
+                current.setData(newData);
                 return;
             }
             current = current.getNext();
         }
+
+        throw new RuntimeException("Node not found");
     }
-    public void sort(){
-        if(isEmpty()){
-            throw new RuntimeException("List is empty");
+
+    public void sort() {
+        if (isEmpty() || size == 1) {
+            return;
         }
-        for (int i = 0; i < size; i++){
-            Nodo current = head;
-            while (current.getNext() != null){
-                if (current.getData() > current.getNext().getData()){
+
+        for (int i = 0; i < size; i++) {
+            NodoDoble current = head;
+            while (current.getNext() != null) {
+                if (current.getData() > current.getNext().getData()) {
                     int aux = current.getData();
                     current.setData(current.getNext().getData());
                     current.getNext().setData(aux);
@@ -155,32 +176,20 @@ public class ListaEnlazadaSimple implements Iterable<Integer>{
             }
         }
     }
-    public void printList(){
-        Nodo dummy = head;
-        while(dummy != null){
+
+    public void printList() {
+        NodoDoble dummy = head;
+        while (dummy != null) {
             System.out.print(dummy.getData() + " ");
             dummy = dummy.getNext();
         }
         System.out.println();
     }
 
-    public void removeList(){
+    public void removeList() {
         head = null;
+        tail = null;
         size = 0;
-    }
-
-
-    public boolean hasNext() {
-        return head != null;
-    }
-
-    public Integer next() {
-        if (!hasNext()) {
-            throw new NoSuchElementException("No hay mas elementos en la lista");
-        }
-        int aux = head.getData();
-        head = head.getNext();
-        return aux;
     }
 
     @Override
@@ -189,7 +198,7 @@ public class ListaEnlazadaSimple implements Iterable<Integer>{
     }
 
     private class ListaIterador implements Iterator<Integer> {
-        private Nodo current = head;
+        private NodoDoble current = head;
 
         @Override
         public boolean hasNext() {
@@ -204,25 +213,6 @@ public class ListaEnlazadaSimple implements Iterable<Integer>{
             int data = current.getData();
             current = current.getNext();
             return data;
-        }
-    }
-}
-
-class Main {
-    public static void main(String[] args) {
-        ListaEnlazadaSimple lista = new ListaEnlazadaSimple();
-        lista.add(5);
-        lista.add(8);
-        lista.add(3);
-        lista.add(1);
-
-        lista.sort();
-        lista.printList();
-
-        System.out.println();
-
-        while (lista.hasNext()){
-            System.out.println(lista.next());
         }
     }
 }
