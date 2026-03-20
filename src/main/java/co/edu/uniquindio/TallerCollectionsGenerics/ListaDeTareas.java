@@ -4,32 +4,18 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class ListaDeTareas implements Iterable<Tarea>{
-    private PriorityQueue<Tarea> listaDeTareas = new PriorityQueue<>();
-    private ArrayList<Tarea> listaDeTareas2 = new ArrayList<>();
+    private List<Tarea> listaDeTareas = new ArrayList<>();
 
     public void agregarTarea(Tarea tarea) {
         listaDeTareas.add(tarea);
     }
-    public void agregarTarea2(Tarea tarea) {
-        listaDeTareas2.add(tarea);
+    public void ordenarPorFecha(){
+        Comparator<Tarea> porFecha= Comparator.comparing(Tarea::getFecha);
+        listaDeTareas.sort(porFecha);
     }
-    public void ordenarPorFecha() {
-        Comparator<Tarea> fecha = (t1, t2) -> t1.getFecha().compareTo(t2.getFecha());
-        listaDeTareas2.sort(fecha);
-    }
-
-    public void imprimirTareasPorPrioridad() {
-        System.out.println("Tareas ordenadas por prioridad: ");
-        for (Tarea tarea : listaDeTareas) {
-            System.out.println(tarea);
-        }
-    }
-
-    public void imprimirTareasPorFecha() {
-        System.out.println("Tareas ordenadas por fecha: ");
-        for (Tarea tarea : listaDeTareas2) {
-            System.out.println(tarea);
-        }
+    public void ordenarPorPrioridad(){
+        Comparator<Tarea> prioridad= Comparator.comparing(Tarea::getPrioridad);
+        listaDeTareas.sort(prioridad);
     }
 
     @Override
@@ -48,14 +34,17 @@ class Main {
         listaDeTareas.agregarTarea(tarea2);
         listaDeTareas.agregarTarea(tarea3);
         listaDeTareas.agregarTarea(tarea4);
-        listaDeTareas.agregarTarea2(tarea);
-        listaDeTareas.agregarTarea2(tarea2);
-        listaDeTareas.agregarTarea2(tarea3);
-        listaDeTareas.agregarTarea2(tarea4);
 
-        listaDeTareas.imprimirTareasPorPrioridad();
+
+        listaDeTareas.ordenarPorPrioridad();
+        for (Tarea t : listaDeTareas) {
+            System.out.println(t);
+        }
         listaDeTareas.ordenarPorFecha();
-        listaDeTareas.imprimirTareasPorFecha();
+        for (Tarea t : listaDeTareas) {
+            System.out.println(t);
+        }
+
 
     }
 }

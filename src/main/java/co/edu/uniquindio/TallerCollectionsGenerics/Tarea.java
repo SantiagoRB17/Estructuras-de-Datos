@@ -1,8 +1,9 @@
 package co.edu.uniquindio.TallerCollectionsGenerics;
 
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
 
-public class Tarea<T> implements Comparable<Tarea> {
+public class Tarea<T>{
     private String descripcion;
     private int prioridad;
     private LocalDate fecha;
@@ -33,10 +34,5 @@ public class Tarea<T> implements Comparable<Tarea> {
                 ", prioridad=" + prioridad +
                 ", fecha=" + fecha +
                 '}';
-    }
-
-    @Override
-    public int compareTo(Tarea o1) {
-        return Integer.compare (o1.getPrioridad() ,this.prioridad);
     }
 }
