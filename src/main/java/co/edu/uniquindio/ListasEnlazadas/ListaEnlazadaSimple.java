@@ -12,6 +12,26 @@ public class ListaEnlazadaSimple implements Iterable<Integer>{
         size = 0;
     }
 
+    public void addIndex(int data, int index){
+        Nodo newNode = new Nodo(data);
+        if(index == size){
+            addLast(data);
+        }
+        if(isEmpty()){
+            head = newNode;
+        }
+        for(int i=0; i<index; i++){
+            head = head.getNext();
+        }
+        if(head != null){
+
+        }else{
+            head = newNode;
+        }
+
+    }
+
+
     public void add(int data) {
         Nodo newNode = new Nodo(data);
         if (isEmpty()) {
@@ -71,7 +91,7 @@ public class ListaEnlazadaSimple implements Iterable<Integer>{
             throw new RuntimeException("List is empty");
         }
 
-        if (index < 0 || index >= size) {
+        if (index < 0 || index > size) {
             throw new RuntimeException("Index out of bounds");
         }
 
@@ -80,7 +100,7 @@ public class ListaEnlazadaSimple implements Iterable<Integer>{
             return;
         }
 
-        if (index == size - 1) {
+        if (index == size) {
             removeLast();
             return;
         }
