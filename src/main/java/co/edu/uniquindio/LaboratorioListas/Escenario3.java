@@ -3,28 +3,75 @@ package co.edu.uniquindio.LaboratorioListas;
 import java.util.Iterator;
 
 public class Escenario3 {
-        public static void main(String[] args) {
+    static class Playlist {
+        private ListaSimpleCircular<String> lista = new ListaSimpleCircular<>();
+        private String actual = null;
+        private int posActual = 0;
 
-            ListaCircularSimplementeEnlazada playlist = new ListaCircularSimplementeEnlazada();
+        public void agregar(String cancion) {
+            lista.agregarfinal(cancion);
+            if (actual == null) actual = cancion;
+            System.out.println("Agregada: " + cancion);
+        }
 
-            playlist.add("Canción A");
-            playlist.add("Canción B");
-            playlist.add("Canción C");
-            playlist.add("Canción D");
+        public void siguiente() {
+            if (lista.estaVacia()) {
+                System.out.println("Lista vacía.");
+                return;
+            }
+            posActual = (posActual + 1) % lista.getTamanio();
+            actual = lista.obtenerValorNodo(posActual);
+            System.out.println("Reproduciendo: " + actual);
+        }
 
-            playlist.printList();
+        public void eliminar(String cancion) {
+            if (lista.estaVacia()) {
+                System.out.println("Lista vacía.");
+                return;
+            }
+            boolean eraActual = cancion.equals(actual);
+            lista.eliminar(cancion);
+            System.out.println("Eliminada: " + cancion);
+            if (lista.estaVacia()) {
+                actual = null;
+                posActual = 0;
+                return;
+            }
+            posActual = posActual % lista.getTamanio();
+            if (eraActual) actual = lista.obtenerValorNodo(posActual);
+        }
 
-            System.out.println("Siguiente: ");
-            Iterator it = playlist.iterator();
-            System.out.println(it.next());
-            System.out.println(it.next());
+        public void buscar(String cancion) {
+            int pos = lista.obtenerPosicionNodo(cancion);
+            if (pos == -1) System.out.println("No encontrada: " + cancion);
+            else System.out.println("Encontrada en posición " + (pos + 1) + ": " + cancion);
+        }
 
-            System.out.println("Eliminar cancion: ");
-            playlist.remove(2);
-            playlist.printList();
+        public void mostrar() {
+            if (lista.estaVacia()) {
+                System.out.println("Lista vacía.");
+                return;
+            }
+            System.out.println("Playlist:");
+            lista.imprimirLista();
+        }
+    }
 
-            System.out.println("Buscar cancion: ");
-            System.out.println("Cancion encontrada: " + playlist.getNodeValue(0));
-            System.out.println("Cancion encontrada: " + playlist.getNodeValue(1));
+    public static void main(String[] args) {
+        Playlist p = new Playlist();
+        p.agregar("Canción A");
+        p.agregar("Canción B");
+        p.agregar("Canción C");
+        p.agregar("Canción D");
+        p.mostrar();
+
+        p.siguiente();
+        p.siguiente();
+        p.eliminar("Canción C");
+        p.mostrar();
+
+        p.siguiente();
+        p.siguiente();
+        p.buscar("Canción B");
     }
 }

@@ -9,9 +9,10 @@ package co.edu.uniquindio.LaboratorioListas;
  * **/
 
 
-public class Nodo<T> {
+public class NodoDoble<T> {
 
-	private Nodo<T> siguienteNodo;
+	private NodoDoble<T> siguienteNodo;
+	private NodoDoble<T> anteriorNodo;
 	private T valorNodo;
 	
 	
@@ -19,7 +20,7 @@ public class Nodo<T> {
 	 * Constructor de la clase Nodo
 	 * @param dato Elemento que se guarda en el Nodo
 	 */
-	public Nodo(T valorNodo) {
+	public NodoDoble(T valorNodo) {
 		this.valorNodo = valorNodo;
 	}
 	
@@ -29,21 +30,22 @@ public class Nodo<T> {
 	 * @param dato Elemento que se guarda en el Nodo
 	 * @param siguiente Enlace al siguiente Nodo
 	 */
-	public Nodo(T dato, Nodo<T> siguiente) {
+	public NodoDoble(T dato, NodoDoble<T> siguiente,NodoDoble<T> anterior) {
 		super();
 		this.valorNodo = dato;
 		this.siguienteNodo = siguiente;
+		this.anteriorNodo = anterior;
 	}
 	
 
 	//Metodos get y set de la clase Nodo
 	
-	public Nodo<T> getSiguienteNodo() {
+	public NodoDoble<T> getSiguienteNodo() {
 		return siguienteNodo;
 	}
 
 
-	public void setSiguienteNodo(Nodo<T> siguienteNodo) {
+	public void setSiguienteNodo(NodoDoble<T> siguienteNodo) {
 		this.siguienteNodo = siguienteNodo;
 	}
 
@@ -56,4 +58,17 @@ public class Nodo<T> {
 	public void setValorNodo(T valorNodo) {
 		this.valorNodo = valorNodo;
 	}
+
+
+	public NodoDoble<T> getAnteriorNodo() {
+		return anteriorNodo;
+	}
+
+
+	public void setAnteriorNodo(NodoDoble<T> anteriorNodo) {
+		this.anteriorNodo = anteriorNodo;
+	}
+	
+	
+	
 }
