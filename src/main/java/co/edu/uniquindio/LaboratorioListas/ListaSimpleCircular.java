@@ -135,7 +135,7 @@ public class ListaSimpleCircular<T> implements Iterable<T> {
 		
 		//buscar el nodo previo
 		while(nodo!=null) {			
-			if( nodo.getValorNodo() == dato ) {
+			if( nodo.getValorNodo().equals(dato) ) {
 				encontrado = true;
 				break;
 			}

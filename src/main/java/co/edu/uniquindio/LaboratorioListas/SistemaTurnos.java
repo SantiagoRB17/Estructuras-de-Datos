@@ -1,95 +1,53 @@
 package co.edu.uniquindio.LaboratorioListas;
 
+/**
+ * Escenario 1 - Sistema de turnos en una panadería.
+ * Usa ListaSimple con objetos Cliente en lugar de Strings.
+ */
 public class SistemaTurnos {
 
+    private ListaSimple<Cliente> cola;
+    private int contadorTurnos;
 
-    private static class Nodo {
-        String cliente;
-        int    turno;
-        Nodo   next;
-
-        Nodo(String cliente, int turno) {
-            this.cliente = cliente;
-            this.turno   = turno;
-            this.next    = null;
-        }
+    public SistemaTurnos() {
+        cola = new ListaSimple<>();
+        contadorTurnos = 0;
     }
 
-
-    private static class Lista {
-        private Nodo head;
-        private Nodo tail;
-        private int  size;
-        private int  contadorTurnos;
-
-
-        public void agregar(String cliente) {
-            contadorTurnos++;
-            Nodo nuevo = new Nodo(cliente, contadorTurnos);
-            if (head == null) {
-                head = tail = nuevo;
-            } else {
-                tail.next = nuevo;
-                tail      = nuevo;
-            }
-            size++;
-            System.out.println("Turno " + contadorTurnos + " asignado a: " + cliente);
-        }
-
-
-        public void eliminar() {
-            if (head == null) {
-                System.out.println("No hay clientes en espera.");
-                return;
-            }
-            System.out.println("Atendiendo: " + head.cliente
-                    + " (turno " + head.turno + ")");
-            head = head.next;
-            if (head == null) tail = null;
-            size--;
-        }
-
-
-        public void buscar() {
-            if (head == null) {
-                System.out.println("No hay clientes en espera.");
-            } else {
-                System.out.println("Siguiente: " + head.cliente
-                        + " (turno " + head.turno + ")");
-            }
-        }
-
-
-        public void mostrar() {
-            if (head == null) {
-                System.out.println("Cola vacía.");
-                return;
-            }
-            System.out.print("Turnos en espera: ");
-            Nodo actual = head;
-            while (actual != null) {
-                System.out.print("[" + actual.turno + "] " + actual.cliente);
-                if (actual.next != null) System.out.print(" -> ");
-                actual = actual.next;
-            }
-            System.out.println();
-        }
+    public void agregar(String nombre) {
+        contadorTurnos++;
+        Cliente cliente = new Cliente(nombre, contadorTurnos);
+        cola.agregarfinal(cliente);
+        System.out.println("Turno " + contadorTurnos + " asignado a: " + nombre);
     }
 
+    public void atender() {
+        if (cola.estaVacia()) {
+            System.out.println("No hay clientes en espera.");
+            return;
+        }
+        Cliente cliente = cola.obtenerValorNodo(0);
+        cola.eliminarPrimero();
+        System.out.println("Atendiendo: " + cliente.getNombre()
+                + " (turno " + cliente.getNumeroTurno() + ")");
+    }
 
-    public static void main(String[] args) {
-        Lista cola = new Lista();
+    public void siguiente() {
+        if (cola.estaVacia()) {
+            System.out.println("No hay clientes en espera.");
+            return;
+        }
+        Cliente cliente = cola.obtenerValorNodo(0);
+        System.out.println("Siguiente: " + cliente.getNombre()
+                + " (turno " + cliente.getNumeroTurno() + ")");
+    }
 
-        cola.agregar("Ana");
-        cola.agregar("Luis");
-        cola.agregar("Pedro");
-        cola.agregar("María");
-
-        cola.mostrar();
-        cola.buscar();
-        cola.eliminar();
-        cola.eliminar();
-        cola.mostrar();
-        cola.buscar();
+    public void mostrar() {
+        if (cola.estaVacia()) {
+            System.out.println("Cola vacía.");
+            return;
+        }
+        System.out.println("Turnos en espera:");
+        cola.imprimirLista();
     }
 }

@@ -1,7 +1,12 @@
 package co.edu.uniquindio.LaboratorioListas;
 
+/**
+ * Escenario 2 - Historial de navegación de un navegador web.
+ * Usa ListaDoble con objetos Pagina en lugar de Strings.
+ */
 public class Historial {
-    private ListaDoble<String> paginas;
+
+    private ListaDoble<Pagina> paginas;
     private int indice;
 
     public Historial() {
@@ -9,97 +14,68 @@ public class Historial {
         indice = -1;
     }
 
-    public String paginaActual() {
+    public Pagina paginaActual() {
         if (indice < 0) {
             throw new IndexOutOfBoundsException("No hay páginas en el historial.");
         }
         return paginas.obtener(indice);
     }
 
-    public void agregar(String pagina) {
+    public void agregar(String url, String titulo) {
         limpiarHistorialDeAvance();
+        Pagina pagina = new Pagina(url, titulo);
         paginas.agregarfinal(pagina);
         indice = paginas.getTamanio() - 1;
-
     }
 
-    public String regresar() {
+    public void agregar(String url) {
+        agregar(url, url);
+    }
 
+    public Pagina regresar() {
         if (indice <= 0) {
-            throw new IndexOutOfBoundsException(
-                    "No hay páginas anteriores para regresar."
-            );
+            throw new IndexOutOfBoundsException("No hay páginas anteriores para regresar.");
         }
         indice--;
         return paginas.obtener(indice);
     }
 
-    public String avanzar() {
-        if (indice >= paginas.getTamanio()) {
-            throw new IndexOutOfBoundsException(
-                    "No hay páginas siguientes para avanzar."
-            );
+    public Pagina avanzar() {
+        if (indice >= paginas.getTamanio() - 1) {
+            throw new IndexOutOfBoundsException("No hay páginas siguientes para avanzar.");
         }
         indice++;
         return paginas.obtener(indice);
     }
 
+    public void visitar(String url, String titulo) {
+        limpiarHistorialDeAvance();
+        Pagina pagina = new Pagina(url, titulo);
+        paginas.agregarfinal(pagina);
+        indice = paginas.getTamanio() - 1;
+        System.out.println("Visitando: " + pagina);
+    }
+
+    public void visitar(String url) {
+        visitar(url, url);
+    }
+
+    public void buscar(String url) {
+        Pagina buscar = new Pagina(url);
+        int pos = paginas.obtenerPosicionNodo(buscar);
+        if (pos == -1) System.out.println("No encontrada: " + url);
+        else System.out.println("Encontrada en posición " + (pos + 1) + ": " + url);
+    }
+
     public void consultarHistorial() {
-        for (String pagina : paginas) {
-            System.out.println(pagina + "\n");
+        for (Pagina pagina : paginas) {
+            System.out.println(pagina);
         }
     }
 
     private void limpiarHistorialDeAvance() {
-        while (paginas.getTamanio() - 1 >  indice) {
+        while (paginas.getTamanio() - 1 > indice) {
             paginas.eliminarUltimo();
         }
     }
-
-    private void buscar(String pagina) {
-        int pos = paginas.obtenerPosicionNodo(pagina);
-        if (pos == -1) System.out.println("No encontrada: " + pagina);
-        else System.out.println("Encontrada en posición " + (pos + 1) + ": " + pagina);
-    }
-
-    public void visitar(String pagina) {
-        limpiarHistorialDeAvance();
-        paginas.agregarfinal(pagina);
-        indice = 0;
-        System.out.println("Visitando: " + pagina);
-    }
-
-
-    public static void main(String[] args) {
-        Historial h = new Historial();
-        h.agregar("google.com");
-        h.agregar("wikipedia.org");
-        h.agregar("github.com");
-        h.consultarHistorial();
-
-        System.out.println("Pagina actual: " + h.paginaActual());
-        System.out.println("Pagina anterior: " + h.regresar());
-        System.out.println("Pagina anterior: " + h.regresar());
-        System.out.println("Pagina siguiente: " + h.avanzar());
-
-        h.buscar("google.com");
-
-        h.visitar("openai.com");
-        h.consultarHistorial();
-
-    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
